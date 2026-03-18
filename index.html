@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная работа №1: Небоскрёб переменных</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: 2.5em;
+        }
+
+        button {
+            background: #ffd700;
+            color: #2c3e50;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #f1c40f;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.4);
+        }
+
+        .building {
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 3px solid gold;
+        }
+
+        .floor {
+            border-bottom: 2px solid #ffd700;
+            padding: 8px 15px;
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .floor:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .floor-number {
+            font-weight: bold;
+            color: #ffd700;
+            min-width: 40px;
+            font-size: 18px;
+        }
+
+        .floor-icon {
+            font-size: 24px;
+            min-width: 40px;
+        }
+
+        .even-floor {
+            background: rgba(255,215,0,0.1);
+        }
+
+        .odd-floor {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .info-panel {
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: white;
+            border: 1px solid gold;
+        }
+
+        .info-panel h2 {
+            color: #ffd700;
+            margin-top: 0;
+            border-bottom: 2px solid gold;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .info-label {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .materials {
+            background: rgba(255,215,0,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .badge-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .console-output {
+            background: #2d2d2d;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            border: 1px solid gold;
+        }
+
+        .roof {
+            text-align: center;
+            font-size: 40px;
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .foundation {
+            text-align: center;
+            font-size: 30px;
+            color: #8B4513;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏗️ JS Builders - Конструктор небоскрёба</h1>
+
+        <div style="text-align: center;">
+            <button onclick="startBuilding()">🏗️ Начать строительство</button>
+            <button onclick="showInConsole()">📋 Показать в консоли</button>
+            <button onclick="location.reload()">🔄 Перезапустить</button>
+        </div>
+
+        <div id="buildingContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script>
+        // ========== ЭТАП 1: Фундамент - объявление переменных ==========
+        var buildingName = "Небоскрёб Знаний";
+        let floors = 0;
+        const constructionYear = 2024;
+
+        // Задание 1.1: Мои переменные
+        let buildingHeight = 150; // высота в метрах
+        let wallMaterial = "стекло и бетон";
+        let hasUndergroundParking = true;
+
+        // ========== ЭТАП 2: Строительные материалы - типы данных ==========
+        const buildingMaterials = {
+            brick: 5000,        // тысяч штук
+            concrete: 20000,    // кубометры
+            glass: 8500,        // кв. метры
+            hasLighting: true,  // подсветка
+            apartmentsPerFloor: 4,
+            hasFitnessCenter: false
+        };
+
+        // Задание 2.1: Проверка типов
+        console.log("========== ЭТАП 2.1: ТИПЫ ДАННЫХ ==========");
+        console.log("Тип buildingName:", typeof buildingName);      // string
+        console.log("Тип floors:", typeof floors);                  // number
+        console.log("Тип constructionYear:", typeof constructionYear); // number
+        console.log("Тип buildingHeight:", typeof buildingHeight);  // number
+        console.log("Тип wallMaterial:", typeof wallMaterial);      // string
+        console.log("Тип hasUndergroundParking:", typeof hasUndergroundParking); // boolean
+        console.log("Тип buildingMaterials:", typeof buildingMaterials); // object
+        console.log("");
+
+        // ========== ЭТАП 5: Магические преобразования ==========
+        console.log("========== ЭТАП 5: МАГИЧЕСКИЕ ПРЕОБРАЗОВАНИЯ ==========");
+
+        // Задание 5.1
+        console.log("Строка + Число = Конкатенация:");
+        console.log("'В здании ' + floors + ' этажей' =", "В здании " + floors + " этажей");
+
+        // Преобразование числа в строку (3 способа)
+        let floorsString1 = String(floors);
+        let floorsString2 = floors + "";
+        let floorsString3 = floors.toString();
+        console.log("Число в строку (способ 1 - String()):", floorsString1, "тип:", typeof floorsString1);
+        console.log("Число в строку (способ 2 - + '') :", floorsString2, "тип:", typeof floorsString2);
+        console.log("Число в строку (способ 3 - toString()):", floorsString3, "тип:", typeof floorsString3);
+
+        // Преобразование строки в число (3 способа)
+        let year = "2024";
+        let yearNumber1 = Number(year);
+        let yearNumber2 = +year;  // унарный плюс
+        let yearNumber3 = parseInt(year);
+        console.log("Строка в число (Number()):", yearNumber1, "тип:", typeof yearNumber1);
+        console.log("Строка в число (+):", yearNumber2, "тип:", typeof yearNumber2);
+        console.log("Строка в число (parseInt()):", yearNumber3, "тип:", typeof yearNumber3);
+
+        // Задание 5.2 (со звёздочкой) - объяснение
+        console.log("\n📝 Задание 5.2: Объяснение результатов:");
+        console.log('"5" + 3 =', "5" + 3, "- это строка '53', потому что + работает как конкатенация");
+        console.log('"5" - 3 =', "5" - 3, "- это число 2, потому что - работает только с числами");
+        console.log('"5" * "3" =', "5" * "3", "- это число 15, потому что * работает только с числами");
+        console.log('"пять" * 2 =', "пять" * 2, "- это NaN, потому что 'пять' нельзя преобразовать в число");
+        console.log("");
+
+        // ========== ОСНОВНАЯ ФУНКЦИЯ СТРОИТЕЛЬСТВА ==========
+        function startBuilding() {
+            console.log("\n========== НАЧИНАЕМ СТРОИТЕЛЬСТВО ==========");
+
+            // ========== ЭТАП 3: Жильцы - работа с пользователем ==========
+            console.log("📢 ЭТАП 3: Сбор информации от пользователя");
+
+            // Задание 3.1 и 3.2
+            buildingName = prompt("🏢 Введите название небоскрёба:", buildingName) || buildingName;
+
+            let floorsInput = prompt("📐 Сколько этажей будет в небоскрёбе?", "15");
+            floors = Number(floorsInput);
+            console.log(`Вы выбрали ${floors} этажей!`);
+
+            let apartmentsInput = prompt("🏠 Сколько квартир на этаже?", "4");
+            buildingMaterials.apartmentsPerFloor = Number(apartmentsInput);
+
+            let endYearInput = prompt("📅 Год окончания строительства:", "2025");
+            let endYear = Number(endYearInput);
+
+            let fitnessInput = prompt("💪 Будет ли фитнес-центр? (да/нет)", "да");
+            buildingMaterials.hasFitnessCenter = fitnessInput.toLowerCase() === "да";
+
+            buildingHeight = prompt("📏 Высота здания (в метрах):", "150") || "150";
+            buildingHeight = Number(buildingHeight);
+
+            // ========== ЭТАП 4: Стройплощадка - шаблонные строки ==========
+            console.log("\n📝 ЭТАП 4: Шаблонные строки");
+
+            const buildingDescription = `
+╔════════════════════════════════════════╗
+║     🏗️ ОТЧЁТ О СТРОИТЕЛЬСТВЕ 🏗️        ║
+╚════════════════════════════════════════╝
+
+🏢 Название: ${buildingName}
+📐 Этажей: ${floors}
+🏗️ Материал стен: ${wallMaterial}
+📅 Год начала: ${constructionYear}
+📅 Год окончания: ${endYear || 2025}
+📏 Высота: ${buildingHeight} метров
+🚗 Подземная парковка: ${hasUndergroundParking ? "✅ Есть" : "❌ Нет"}
+💪 Фитнес-центр: ${buildingMaterials.hasFitnessCenter ? "✅ Есть" : "❌ Нет"}
+🏠 Квартир на этаже: ${buildingMaterials.apartmentsPerFloor}
+
+📦 МАТЕРИАЛЫ:
+• Кирпич: ${buildingMaterials.brick} тыс. шт.
+• Бетон: ${buildingMaterials.concrete} м³
+• Стекло: ${buildingMaterials.glass} м²
+• Декоративная подсветка: ${buildingMaterials.hasLighting ? "✅ Есть" : "❌ Нет"}
+
+📊 ВСЕГО КВАРТИР: ${floors * buildingMaterials.apartmentsPerFloor}
+`;
+
+            console.log(buildingDescription);
+
+            // ========== ЭТАП 6: Интерактивная витрина ==========
+            buildVisualization(endYear);
+        }
+
+        // Задание 6.1: Функция визуализации
+        function buildVisualization(endYear) {
+            let container = document.getElementById('buildingContainer');
+            let infoContainer = document.getElementById('infoContainer');
+
+            // Информационная панель
+            let infoHTML = `
+                <div class="info-panel">
+                    <h2>🏗️ Информация о небоскрёбе "${buildingName}"</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">📅 Год постройки:</span> ${constructionYear} - ${endYear || 2025}
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📏 Высота:</span> ${buildingHeight} м
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🏗️ Материал:</span> ${wallMaterial}
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">🚗 Парковка:</span>
+                            <span class="badge ${hasUndergroundParking ? 'badge-success' : 'badge-warning'}">
+                                ${hasUndergroundParking ? 'Есть' : 'Нет'}
+                            </span>
+                        </div>
+                    </div><div class="materials">
+                        <h3 style="color: #ffd700; margin-top: 0;">📦 Материалы:</h3>
+                        <div class="info-grid">
+                            <div class="info-item">🧱 Кирпич: ${buildingMaterials.brick} тыс. шт.</div>
+                            <div class="info-item">🏗️ Бетон: ${buildingMaterials.concrete} м³</div>
+                            <div class="info-item">🪟 Стекло: ${buildingMaterials.glass} м²</div>
+                            <div class="info-item">💡 Подсветка: ${buildingMaterials.hasLighting ? '✅' : '❌'}</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 15px;">
+                        <span class="badge badge-success">Всего квартир: ${floors * buildingMaterials.apartmentsPerFloor}</span>
+                        <span class="badge badge-warning">Фитнес: ${buildingMaterials.hasFitnessCenter ? '✅' : '❌'}</span>
+                    </div>
+                </div>
+            `;
+
+            // Визуализация здания
+            let buildingHTML = `
+                <div class="roof">▲</div>
+                <div class="building">
+            `;
+
+            // Строим этажи (сверху вниз)
+            for (let i = floors; i >= 1; i--) {
+                let floorClass = i % 2 === 0 ? 'even-floor' : 'odd-floor';
+                let icon = i % 2 === 0 ? '🪟 Окна' : '🚪 Двери';
+                let windowsCount = i % 2 === 0 ? '🪟🪟🪟' : '🚪🚪';
+
+                buildingHTML += `
+                    <div class="floor ${floorClass}">
+                        <span class="floor-number">${i}</span>
+                        <span class="floor-icon">${icon}</span>
+                        <span style="flex-grow: 1;">Этаж ${i} ${windowsCount}</span>
+                        <span style="color: #ffd700;">${i * buildingMaterials.apartmentsPerFloor} кв.</span>
+                    </div>
+                `;
+            }
+
+            buildingHTML += </div><div class="foundation">▬▬▬▬▬ Фундамент ▬▬▬▬▬</div>;
+
+            // Добавляем всё на страницу
+            container.innerHTML = buildingHTML;
+            infoContainer.innerHTML = infoHTML;
+
+            console.log("✅ Здание успешно построено! Всего этажей:", floors);
+        }
+
+        // Функция для показа информации в консоли
+        function showInConsole() {
+            console.log("\n========== ТЕКУЩЕЕ СОСТОЯНИЕ НЕБОСКРЁБА ==========");
+            console.log("🏢 Название:", buildingName);
+            console.log("📐 Этажей:", floors);
+            console.log("📏 Высота:", buildingHeight + "м");
+            console.log("🏗️ Материал:", wallMaterial);
+            console.log("📅 Год:", constructionYear);
+            console.log("🚗 Парковка:", hasUndergroundParking ? "Есть" : "Нет");
+            console.log("\n📦 Материалы:", buildingMaterials);
+            console.log("================================================");
+        }
+
+        // Автоматический запуск при загрузке страницы
+        window.onload = function() {
+            console.log("🏗️ Лабораторная работа №1: 'Небоскрёб переменных'");
+            console.log("Нажмите кнопку 'Начать строительство' для старта!");
+
+            // Показываем пустой каркас
+            document.getElementById('buildingContainer').innerHTML = `
+                <div style="text-align: center; padding: 50px; background: rgba(0,0,0,0.5); border-radius: 15px;">
+                    <h2 style="color: gold;">👆 Нажмите кнопку выше, чтобы начать строительство!</h2>
+                    <div style="font-size: 100px;">🏗️</div>
+                </div>
+            `;
+        };
+    </script>
+</body>
+</html>
